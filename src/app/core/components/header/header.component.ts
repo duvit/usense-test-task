@@ -17,16 +17,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription | null = null;
 
-  constructor(private currencyService: CurrencyService) {}
+  constructor(private currencyService: CurrencyService) { }
 
   ngOnInit(): void {
     this.subscription = this.currencyService
-      .getCurrency([CurrencyCodes.USD, CurrencyCodes.EUR])
+      .getAllCurrencyRates()
       .subscribe({
         next: (data) => {
-          this.usdRate = this.getRate(data, CurrencyCodes.USD);
-          this.eurRate = this.getRate(data, CurrencyCodes.EUR);
-          console.log(data, this.usdRate, this.eurRate);
+          this.usdRate = this.currencyService.getCurrencyRate(data, CurrencyCodes.USD);
+          this.eurRate = this.currencyService.getCurrencyRate(data, CurrencyCodes.EUR);
         },
         error: (error) => console.error('Error fetching exchange rates', error),
       });
@@ -36,8 +35,4 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.subscription?.unsubscribe();
   }
 
-  getRate(data: any[], currency: string): number | null {
-    const currencyData = data.find((item) => item.cc === currency);
-    return currencyData ? currencyData.rate : null;
-  }
 }

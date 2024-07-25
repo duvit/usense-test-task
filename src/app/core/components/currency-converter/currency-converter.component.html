@@ -1,24 +1,25 @@
 <div class="converter">
-  <h2>Currency Converter</h2>
-  <div class="form-group">
-    <select id="selectedCurrency1" [(ngModel)]="selectedCurrency1">
-      <option
-        *ngFor="let currency of getFilteredCurrencies(selectedCurrency2)"
-        [value]="currency"
-      >
+  <h2 class="converter__title">Currency Converter</h2>
+  <div class="converter__form-group">
+    <select class="converter__select" id="selectedCurrency1" [(ngModel)]="selectedCurrency1"
+      (change)="onCurrencyChange()">
+      <option class="converter__selecet-option" *ngFor="let currency of getFilteredCurrencies(selectedCurrency2)"
+        [value]="currency">
         {{ currency }}
       </option>
     </select>
-    <input type="text" placeholder="100.00" />
+    <input class="converter__input" type="number" [(ngModel)]="amount1" (input)="onAmountChange('amount1')"
+      placeholder="100.00" />
   </div>
-  <div class="form-group">
-    <select id="selectedCurrency2" [(ngModel)]="selectedCurrency2">
-      <option
-        *ngFor="let currency of getFilteredCurrencies(selectedCurrency1)"
-        [value]="currency"
-      >
+  <div class="converter__form-group">
+    <select class="converter__select" id="selectedCurrency2" [(ngModel)]="selectedCurrency2"
+      (change)="onCurrencyChange()">
+      <option class="converter__selecet-option" *ngFor="let currency of getFilteredCurrencies(selectedCurrency1)"
+        [value]="currency">
         {{ currency }}
       </option>
     </select>
+    <input class="converter__input" type="number" [(ngModel)]="amount2" (input)="onAmountChange('amount2')"
+      placeholder="100.00" />
   </div>
 </div>

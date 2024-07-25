@@ -1,0 +1,27 @@
+.exchange-rates {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #f1f1f1;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  gap: 20px;
+  font-family: "Arial", sans-serif;
+
+  .usd-rate,
+  .eur-rate {
+    display: flex;
+    align-items: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #333;
+
+    .usd-sign,
+    .eur-sign {
+      margin-right: 5px;
+      font-size: 1.2em;
+      color: #555;
+    }
+  }
+}

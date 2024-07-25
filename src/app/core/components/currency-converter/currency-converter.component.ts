@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { CurrencyService } from '../../services/currency.service';
 import { CurrencyCodes } from '../../../shared/enums/currency-codes.enum';
-import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-currency-converter',
   standalone: true,
-  imports: [CommonModule, FormsModule] ,
+  imports: [CommonModule, FormsModule],
   templateUrl: './currency-converter.component.html',
   styleUrl: './currency-converter.component.scss',
 })
@@ -23,24 +23,28 @@ export class CurrencyConverterComponent {
     CurrencyCodes.UAH,
   ];
 
+  exchangeRates: { [key: string]: number } = {};
+
   constructor(private currencyService: CurrencyService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.currencyService.getExchangeRates().subscribe((data: any[]) => {
+      data.forEach(rate => {
+        this.exchangeRates[rate.cc] = rate.rate;
+      });
+      this.calculateResult();
+    });
+  }
 
   getFilteredCurrencies(exclude: string): string[] {
     return this.currencies.filter((currency) => currency !== exclude);
   }
 
-  convertCurrency(): void {
-    this.currencyService
-      .convert(this.selectedCurrency1, this.selectedCurrency2, this.amount)
-      .subscribe(
-        (response) => {
-          this.result = response.result;
-        },
-        (error) => {
-          console.error('Error fetching conversion data', error);
-        }
-      );
+  calculateResult(): void {
+    if (this.selectedCurrency1 && this.selectedCurrency2 && this.amount) {
+      const rate1 = this.exchangeRates[this.selectedCurrency1];
+      const rate2 = this.exchangeRates[this.selectedCurrency2];
+      this.result = (this.amount * rate1) / rate2;
+    }
   }
 }

@@ -18,16 +18,7 @@ export class CurrencyService {
     return this.http.get<any>(`${this.apiUrl}`);
   }
 
-  convert(
-    fromCurrency: string,
-    toCurrency: string,
-    amount: number
-  ): Observable<{ result: number }> {
-    return this.http.get<any>(`${this.apiUrl}${fromCurrency}`).pipe(
-      map((response) => {
-        const rate = response.rates[toCurrency];
-        return { result: amount * rate };
-      })
-    );
+  getExchangeRates(): Observable<any> {
+    return this.http.get<any>(this.apiUrl);
   }
 }
